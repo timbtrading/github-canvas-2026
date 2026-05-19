@@ -1,0 +1,28 @@
+name: GitHub Canvas
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 13 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  generate-canvas:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Use Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Generate GitHub Canvas commits
+        run: node scripts/generate-canvas.mjs
+
+      - name: Push generated commits
+        run: git push
